@@ -191,7 +191,7 @@ void mish()
 {
 	RECT area = { 0, 0, 1100,500};
 
-	while (txMouseButtons() = 1 and )
+	while (txMouseButtons() == 1 )
 	{
 		txCircle(txMouseX(), txMouseY(), 20);
 		txSleep(0);
