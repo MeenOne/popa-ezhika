@@ -8,12 +8,13 @@
 #include <D:/TX/TXLib.h>
 #include <stdio.h>
 #include <math.h>
+#include <iostream>
 void ottyag();
 void vozvrat_rezinki();
 void polet_shara();
-void test_new_rubberband();
 void mish();
 void ground();
+void zapros();
 void wall(int x, int y);
 void rogatka_1(int x, int y);
 void rogatka_2(int x, int y);
@@ -44,7 +45,7 @@ int main()
 	polet_shara();
 
 
-	//txDisableAutoPause();
+	txDisableAutoPause();
 
 	return 0;
 }
@@ -64,37 +65,39 @@ void wall(int x, int y)
 {
 	txSetColor(TX_BLACK);
 	txSetFillColour(RGB(160, 54, 35));
-	txRectangle(x + 50, y + 450, x + 130, y + 250);
-	POINT up[4]{ {x + 50, y + 250}, {x + 130, y + 250,}, {x + 230, y + 180}, {x + 150, y + 180} };
+	txRectangle(x + 50 - 75, y + 450 - 120, x + 130 - 75, y + 250 - 120);
+	POINT up[4]{ {x + 50 - 75, y + 250 - 120}, {x + 130 - 75, y + 250 - 120,}, {x + 230 - 75, y + 180 - 120}, {x + 150 - 75, y + 180 - 120} };
 	txPolygon(up, 4);
-	POINT left[4]{ {x + 130, y + 450}, {x + 130, y + 250}, {x + 230, y + 180}, {x + 230, y + 380} };
+	POINT left[4]{ {x + 130 - 75, y + 450 - 120}, {x + 130 - 75, y + 250 - 120}, {x + 230 - 75, y + 180 - 120}, {x + 230 - 75, y + 380 - 120} };
 	txPolygon(left, 4);
+
 }
 
 
 void rubber_band(int x, int y, int t)
 {
 	txSetColor(TX_BLACK, 7);
-	txArc(x + 45 - 2.5 * t, y + 105, x + 245 + 2.5 * t, y + 135, 45, 135);
+	txArc(x + 45 - 75 - 2.5 * t, y + 105 - 120, x + 245 - 75 + 2.5 * t, y + 135 - 120, 45, 135);
 }
+
 
 void rubber_band2(int x, int y, int t)
 {
 	txSetColor(TX_BLACK, 7);
-	txArc(x + 45 + 2.5 * t, y + 105, x + 245 - 2.5 * t, y + 135, 45, 135);
+	txArc(x + 45 - 75 + 2.5 * t, y + 105 - 120, x + 245 - 75 - 2.5 * t, y + 135 - 120, 45, 135);
 }
 
 void rubber_band3(int x, int y, int t)
 {
 	txSetColor(TX_BLACK, 7);
-	txArc(x +110 + 0.000001 * t, y + 105, x + 180 - 0.00001 * t, y + 135, 45, 135);
+	txArc(x + (110 - 75) + 0.000001 * t, y + 105 - 120, x + 180 - 75 - 0.00001 * t, y + 135 - 120, 45, 135);
 }
 
 void rogatka_1(int x, int y)
 {
 	txSetColor(TX_BLACK);
 	txSetFillColor(TX_BROWN);
-	POINT rog[6]{ {x + 130, y + 220}, {x + 140, y + 220}, {x + 140, y + 160}, {x + 130, y + 90}, {x + 115, y + 90}, {x + 130, y + 160} };
+	POINT rog[6]{ {x + 130 - 75, y + 220 - 120}, {x + 140 - 75, y + 220 - 120}, {x + 140 - 75, y + 160 - 120}, {x + 130 - 75, y + 90 - 120}, {x + 115 - 75, y + 90 - 120}, {x + 130 - 75, y + 160 - 120} };
 	txPolygon(rog, 6);
 }
 
@@ -103,7 +106,7 @@ void rogatka_2(int x, int y)
 {
 	txSetColor(TX_BLACK);
 	txSetFillColor(TX_BROWN);
-	POINT rog[6]{ {x + 140, y + 220}, {x + 150, y + 220}, {x + 150,y + 160}, {x + 170,y + 100 }, {x + 160, y + 100}, {x + 140, y + 160} };
+	POINT rog[6]{ {x + 140 - 75, y + 220 - 120}, {x + 150 - 75, y + 220 - 120}, {x + 150 - 75, y + 160 - 120}, {x + 170 - 75, y + 100 - 120}, {x + 160 - 75, y + 100 - 120}, {x + 140 - 75, y + 160 - 120} };
 	txPolygon(rog, 6);
 }
 
@@ -111,7 +114,7 @@ void rogatka_2(int x, int y)
 void line_for_rogatka(int x, int y)
 {
 	txSetColor(TX_BROWN);
-	txLine(x + 140, y + 219, x + 140, y + 160);
+	txLine(x + 140 - 75, y + 219 - 120, x + 140 - 75, y + 160 - 120);
 	txSetColor(TX_BLACK);
 }
 
@@ -119,19 +122,19 @@ void line_for_rogatka(int x, int y)
 void shar(int x, int y, int t)
 {
 	txSetFillColor(TX_YELLOW);
-	txCircle(x + 75 - 2.5 * t, y + 120, 20);
+	txCircle(x + 75 - 75 - 2.5 * t, y + 120 - 120, 20);
 }
 
 void shar2(int x, int y, int t)
 {
 	txSetColor(TX_BLACK);
 	txSetFillColor(TX_YELLOW);
-	txCircle(x + 75 + 2.5 * t, y + 120, 20);
+	txCircle(x + 2.5 * t, y , 20);
 }
 
 void shar3(int z, int l, int p, int m, int t)
 {
-	printf("%d %d %d %d %d \n", p, m, z, l, t);
+	//printf("%d %d %d %d %d \n", p, m, z, l, t);
 	txSetColor(TX_BLACK);
 	txSetFillColor(TX_YELLOW);
 	txCircle(z + 70 + p * t, l + 120 + m * t, 20);
@@ -161,20 +164,20 @@ void oblaka(int x, int y)
 void rb2(int x, int y, int t)
 {
 	txSetColor(TX_BLACK, 7);
-	txArc(x + 45 - 2.5 * t, y + 105, x + 245 + 2.5 * t, y + 135, -180, 35);
+	txArc(x + 45 - 75 - 2.5 * t, y + 105 - 120, x + 245 - 75 + 2.5 * t, y + 135 - 120, -180, 35);
 }
 
 void rb22(int x, int y, int t)
 {
 	txSetColor(TX_BLACK, 7);
-	txArc(x + 45 + 2.5 * t, y + 105, x + 245 - 2.5 * t, y + 135, -180, 35);
+	txArc(x + 45 - 75 + 2.5 * t, y + 105 - 120, x + 245 - 75 - 2.5 * t, y + 135 - 120, -180, 35);
 }
 
 void rb23(int x, int y, int t)
 {
 	 
 	txSetColor(TX_BLACK, 7);
-	txArc(x + 110 + 1 * t*0, y + 105, x + 180 - 1 * t *0, y + 135, -180, 35);
+	txArc(x + 110 - 75 + 1 * t*0, y + 105 - 120, x + 180 - 75 - 1 * t *0, y + 135 - 120, -180, 35);
 }
 
 
@@ -186,18 +189,18 @@ void test_rubber_band()
 
 void mish()
 {
-	RECT area = { 100, 100, 200, 200};
+	RECT area = { 0, 0, 1100,500};
 
-	while (txMouseButtons() != 1)
+	while (txMouseButtons() = 1 and )
 	{
-		if (In(txMousePos(), area)) txTextOut(100, 100, "http://vk.com/TiShtoTamDelaesh?!");
+		txCircle(txMouseX(), txMouseY(), 20);
 		txSleep(0);
 	}
 }
 void ottyag()
 {
-		int x = 0;
-		int y = 0;
+		int x = 75;
+		int y = 120;
 		int t = 0;
 
 		while (t < 18)
@@ -205,6 +208,9 @@ void ottyag()
 
 
 			ground();
+
+
+
 
 
 			wall(x, y);
@@ -244,8 +250,8 @@ void vozvrat_rezinki()
 {
 
 	int t = -18;
-	int x = 0;
-	int y = 0;
+	int x = 75;
+	int y = 120;
 
 	while (t < 30)
 	{
@@ -288,20 +294,17 @@ void vozvrat_rezinki()
 void polet_shara()
 {
 	int t = 29;
-	int x = 0;
-	int y = 0;
+	int x = 75;
+	int y = 120;
 	int z = 0;
 	int l = 0;
 	int m = 0;
 	int p = 0;
-	
+
 
 		while ( m < 36 and p < 110)
 	{
 
-		
-
-			
 			ground();
 
 
@@ -340,11 +343,4 @@ void polet_shara()
 							//1/1000
 	
 	}
-}
-
-void test_new_rubberband()
-{
-	mish();
-
-		
 }
