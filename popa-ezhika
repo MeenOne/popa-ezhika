@@ -9,31 +9,35 @@
 #include <stdio.h>
 #include <math.h>
 #include <iostream>
+using namespace std;
 void ottyag();
 void vozvrat_rezinki();
 void polet_shara();
 void mish();
 void ground();
-void zapros();
 void wall(int x, int y);
 void rogatka_1(int x, int y);
 void rogatka_2(int x, int y);
-void shar(int x, int y, int t);
-void shar2(int x, int y, int t); 
+void shar(int x, int y, int t, int a);
+void shar2(int x, int y, int t, int a);
 void shar3(int z, int l, int t);
 void lunka(int z, int p, int t);
 void oblaka(int x, int y); 
-void rubber_band(int x, int y, int t);
-void rubber_band2(int x, int y, int t);
+void rubber_band(int x, int y, int t, int a);
+void rubber_band2(int x, int y, int t, int a);
 void rubber_band3(int x, int y, int t);
-void rb2(int x, int y, int t);
-void rb22(int x, int y, int t);
+void rb2(int x, int y, int t, int a);
+void rb22(int x, int y, int t, int a);
 void rb23(int x, int y, int t);
 void test_rubber_band();
 void line_for_rogatka(int x, int y);
 
 int main()
 {
+	int a;
+
+	cin >> a;
+
 	txCreateWindow(1100, 500);
 
 	//test_new_rubberband();
@@ -74,17 +78,17 @@ void wall(int x, int y)
 }
 
 
-void rubber_band(int x, int y, int t)
+void rubber_band(int x, int y, int t, int a)
 {
 	txSetColor(TX_BLACK, 7);
-	txArc(x + 45 - 75 - 2.5 * t, y + 105 - 120, x + 245 - 75 + 2.5 * t, y + 135 - 120, 45, 135);
+	txArc(x + 45 - 75 - (a) * t, y + 105 - 120, x + 245 - 75 + (a) * t, y + 135 - 120, 45, 135);
 }
 
 
-void rubber_band2(int x, int y, int t)
+void rubber_band2(int x, int y, int t, int a)
 {
 	txSetColor(TX_BLACK, 7);
-	txArc(x + 45 - 75 + 2.5 * t, y + 105 - 120, x + 245 - 75 - 2.5 * t, y + 135 - 120, 45, 135);
+	txArc(x + 45 - 75 + (4*a) * t, y + 105 - 120, x + 245 - 75 - (4*a) * t, y + 135 - 120, 45, 135);
 }
 
 void rubber_band3(int x, int y, int t)
@@ -119,22 +123,22 @@ void line_for_rogatka(int x, int y)
 }
 
 
-void shar(int x, int y, int t)
+void shar(int x, int y, int t, int a)
 {
 	txSetFillColor(TX_YELLOW);
-	txCircle(x + 75 - 75 - 2.5 * t, y + 120 - 120, 20);
+	txCircle(x + 75 - 75 - a * t, y + 120 - 120, 20);
 }
 
-void shar2(int x, int y, int t)
+void shar2(int x, int y, int t, int a)
 {
 	txSetColor(TX_BLACK);
 	txSetFillColor(TX_YELLOW);
-	txCircle(x + 2.5 * t, y , 20);
+	txCircle(x + (4*a) * t, y , 20);
 }
 
 void shar3(int z, int l, int p, int m, int t)
 {
-	//printf("%d %d %d %d %d \n", p, m, z, l, t);
+	printf("%d %d %d %d %d \n", p, m, z, l, t);
 	txSetColor(TX_BLACK);
 	txSetFillColor(TX_YELLOW);
 	txCircle(z + 70 + p * t, l + 120 + m * t, 20);
@@ -161,16 +165,16 @@ void oblaka(int x, int y)
 
 }
 
-void rb2(int x, int y, int t)
+void rb2(int x, int y, int t, int a)
 {
 	txSetColor(TX_BLACK, 7);
-	txArc(x + 45 - 75 - 2.5 * t, y + 105 - 120, x + 245 - 75 + 2.5 * t, y + 135 - 120, -180, 35);
+	txArc(x + 45 - 75 - a * t, y + 105 - 120, x + 245 - 75 + a * t, y + 135 - 120, -180, 35);
 }
 
-void rb22(int x, int y, int t)
+void rb22(int x, int y, int t, int a)
 {
 	txSetColor(TX_BLACK, 7);
-	txArc(x + 45 - 75 + 2.5 * t, y + 105 - 120, x + 245 - 75 - 2.5 * t, y + 135 - 120, -180, 35);
+	txArc(x + 45 - 75 + (4*a) * t, y + 105 - 120, x + 245 - 75 - (4*a) * t, y + 135 - 120, -180, 35);
 }
 
 void rb23(int x, int y, int t)
@@ -202,6 +206,7 @@ void ottyag()
 		int x = 75;
 		int y = 120;
 		int t = 0;
+		int a;
 
 		while (t < 18)
 		{
@@ -210,19 +215,16 @@ void ottyag()
 			ground();
 
 
-
-
-
 			wall(x, y);
 
 
-			rubber_band(x, y, t);
+			rubber_band(x, y, t, a);
 
 
 			rogatka_2(x, y);
 			
 			
-			shar(x, y, t);
+			shar(x, y, t, a);
 
 
 			rogatka_1(x, y);
@@ -234,7 +236,7 @@ void ottyag()
 			//oblaka(x, y);
 
 
-			rb2(x, y, t);
+			rb2(x, y, t, a);
 
 			t++;
 
@@ -249,9 +251,10 @@ void ottyag()
 void vozvrat_rezinki()
 {
 
-	int t = -18;
+	int t = 0;
 	int x = 75;
 	int y = 120;
+	int a;
 
 	while (t < 30)
 	{
@@ -263,13 +266,13 @@ void vozvrat_rezinki()
 		wall(x, y);
 
 
-		rubber_band2(x, y, t);
+		rubber_band2(x, y, t, a);
 
 
 		rogatka_2(x, y);
 
 
-		shar2(x, y, t);
+		shar2(x, y, t, a);
 
 
 		rogatka_1(x, y);
@@ -281,7 +284,7 @@ void vozvrat_rezinki()
 		//oblaka(x, y);
 
 		
-		rb22(x, y, t);
+		rb22(x, y, t, a);
 
 		t++;
 
@@ -300,6 +303,7 @@ void polet_shara()
 	int l = 0;
 	int m = 0;
 	int p = 0;
+
 
 
 		while ( m < 36 and p < 110)
