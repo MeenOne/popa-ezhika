@@ -1,347 +1,215 @@
-///---/\---/\-------Это ASCII KOT!--//		
-//  {  '-'  }                      //
-//  {  0 0  }     Добавь его себе  //
-//  --> V <--  в исходник, и тебе  //
-//   \ \|/ /      будет, наверно,  //
-//    \___/  приятно отлаживаться  //
-//---------------долгими ночами:)--//
 #include <D:/TX/TXLib.h>
-#include <stdio.h>
-#include <math.h>
-void ottyag();
-void vozvrat_rezinki();
-void polet_shara();
-void mish();
+#include  <stdio.h>
+
+
+struct choords {
+    int x;
+    int y;
+    int x1;
+};
+
 void ground();
+
 void wall(int x, int y);
-void rogatka_1(int x, int y);
-void rogatka_2(int x, int y);
-void shar(int x, int y, int t);
-void shar2(int x, int y, int t);
-void shar3(int z, int l, int t);
-void lunka(int z, int p, int t);
-void oblaka(int x, int y); 
-void rubber_band(int x, int y, int t);
-void rubber_band2(int x, int y, int t);
-void rubber_band3(int x, int y, int t);
-void rb2(int x, int y, int t);
-void rb22(int x, int y, int t);
-void rb23(int x, int y, int t);
-void test_rubber_band();
+
+void rogatka_part1(int x, int y);
+void rogatka_part2(int x, int y);
 void line_for_rogatka(int x, int y);
+
+void draw_higher_rubber(int x, int y, int d);
+void draw_lowler_rubber(int x, int y, int d);
+void control_rubber(int* d);
+
+void draw_shar(int x, int y);
+
+int ottyag(int x, int y);
+
+void vozvrat(int x, int y, int d);
+
+void polet(int d);
+
 
 int main()
 {
+    int dd = 0;
 
-	txCreateWindow(1100, 500);
+    int t = 0;
 
-	//test_new_rubberband();
-	
-	ottyag();
+    txCreateWindow(1100, 500);
+    ground();
+    wall(0, 0);
 
-	vozvrat_rezinki();
+    dd = ottyag(0, 0);
 
-	polet_shara();
+    printf("d=%d\n", dd);
 
-	txDisableAutoPause();
+    vozvrat(0, 0, dd);
 
-	return 0;
+    polet(dd);
+
+    return 0;
 }
 
 void ground()
 {
-	txSetColor(TX_GREEN);
-	txSetFillColor(TX_LIGHTBLUE);
-	txRectangle(0, 0, 1100, 250);
-	txSetFillColor(TX_GREEN);
-	txRectangle(0, 250, 1100, 500);
+    txSetColor(TX_GREEN);
+    txSetFillColor(TX_LIGHTBLUE);
+    txRectangle(0, 0, 1100, 250);
+    txSetFillColor(TX_GREEN);
+    txRectangle(0, 250, 1100, 500);
 
 }
-
 
 void wall(int x, int y)
 {
-	txSetColor(TX_BLACK);
-	txSetFillColour(RGB(160, 54, 35));
-	txRectangle(x + 50 - 75, y + 450 - 120, x + 130 - 75, y + 250 - 120);
-	POINT up[4]{ {x + 50 - 75, y + 250 - 120}, {x + 130 - 75, y + 250 - 120,}, {x + 230 - 75, y + 180 - 120}, {x + 150 - 75, y + 180 - 120} };
-	txPolygon(up, 4);
-	POINT left[4]{ {x + 130 - 75, y + 450 - 120}, {x + 130 - 75, y + 250 - 120}, {x + 230 - 75, y + 180 - 120}, {x + 230 - 75, y + 380 - 120} };
-	txPolygon(left, 4);
-
+    txSetColor(TX_BLACK);
+    txSetFillColour(RGB(160, 54, 35));
+    txRectangle(x + 70, y + 450, x + 150, y + 250);
+    POINT up[4]{ {x + 70, y + 250}, {x + 150, y + 250,}, {x + 250, y + 180}, {x + 170, y + 180} };
+    txPolygon(up, 4);
+    POINT left[4]{ {x + 150, y + 450}, {x + 150, y + 250}, {x + 250, y + 180}, {x + 250, y + 380} };
+    txPolygon(left, 4);
 }
 
-
-void rubber_band(int x, int y, int t)
+void rogatka_part1(int x, int y)
 {
-	txSetColor(TX_BLACK, 7);
-	txArc(x + 45 - 75 - 0.5 * t, y + 105 - 120, x + 245 - 75 + 0.5 * t, y + 135 - 120, 45, 135);
+    txSetColor(TX_BLACK);
+    txSetFillColor(TX_BROWN);
+    POINT rog[6]{ {x + 150, y + 220}, {x + 160, y + 220}, {x + 160, y + 160}, {x + 150, y + 90}, {x + 135, y + 90}, {x + 150, y + 160} };
+    txPolygon(rog, 6);
 }
 
-
-void rubber_band2(int x, int y, int t)
+void rogatka_part2(int x, int y)
 {
-	txSetColor(TX_BLACK, 7);
-	txArc(x + 45 - 75 + 2.5 * t, y + 105 - 120, x + 245 - 75 - 2.5 * t, y + 135 - 120, 45, 135);
+    txSetColor(TX_BLACK);
+    txSetFillColor(TX_BROWN);
+    POINT rog[6]{ {x + 160, y + 220}, {x + 170, y + 220}, {x + 170,y + 160}, {x + 190,y + 100 }, {x + 180, y + 100}, {x + 160, y + 160} };
+    txPolygon(rog, 6);
 }
-
-void rubber_band3(int x, int y, int t)
-{
-	txSetColor(TX_BLACK, 7);
-	txArc(x + (110 - 75) + 0.000001 * t, y + 105 - 120, x + 180 - 75 - 0.00001 * t, y + 135 - 120, 45, 135);
-}
-
-void rogatka_1(int x, int y)
-{
-	txSetColor(TX_BLACK);
-	txSetFillColor(TX_BROWN);
-	POINT rog[6]{ {x + 130 - 75, y + 220 - 120}, {x + 140 - 75, y + 220 - 120}, {x + 140 - 75, y + 160 - 120}, {x + 130 - 75, y + 90 - 120}, {x + 115 - 75, y + 90 - 120}, {x + 130 - 75, y + 160 - 120} };
-	txPolygon(rog, 6);
-}
-
-
-void rogatka_2(int x, int y)
-{
-	txSetColor(TX_BLACK);
-	txSetFillColor(TX_BROWN);
-	POINT rog[6]{ {x + 140 - 75, y + 220 - 120}, {x + 150 - 75, y + 220 - 120}, {x + 150 - 75, y + 160 - 120}, {x + 170 - 75, y + 100 - 120}, {x + 160 - 75, y + 100 - 120}, {x + 140 - 75, y + 160 - 120} };
-	txPolygon(rog, 6);
-}
-
 
 void line_for_rogatka(int x, int y)
 {
-	txSetColor(TX_BROWN);
-	txLine(x + 140 - 75, y + 219 - 120, x + 140 - 75, y + 160 - 120);
-	txSetColor(TX_BLACK);
+    txSetColor(TX_BROWN);
+    txLine(x + 160, y + 219, x + 160, y + 160);
+    txSetColor(TX_BLACK);
 }
 
-
-void shar(int x, int y, int t)
+void draw_higher_rubber(int x, int y, int d)
 {
-	txSetFillColor(TX_YELLOW);
-	txCircle(x + 75 - 75 - 0.5 * t, y + 120 - 120, 20);
+    txSetColor(TX_BLACK, 7);
+    txArc(x + 65 - d, y + 105, 265 + d, 135, 45, 135);
 }
 
-void shar2(int x, int y, int t)
+void draw_lowler_rubber(int x, int y, int d)
 {
-	txSetColor(TX_BLACK);
-	txSetFillColor(TX_YELLOW);
-	txCircle(x + 2.5 * t, y , 20);
+    txSetColor(TX_BLACK, 7);
+    txArc(x + 65 - d, y + 105, 265 + d, 135, -180, 35);
 }
 
-void shar3(int z, int l, int p, int m, int t)
+
+
+void control_rubber(int* d)
 {
-	
+    if (GetAsyncKeyState(VK_LEFT)) *d++;
 
-	txSetColor(TX_BLACK);
-	txSetFillColor(TX_YELLOW);
-	txCircle(z + 70 + p * t, l + 120 + m * t, 20);
-	
+    if (GetAsyncKeyState(VK_RIGHT)) *d--;
+
+    printf("d=%d\n", *d);
 
 }
 
-void lunka(int z, int p, int t)
+void draw_shar(int x, int y)
 {
-	txSetFillColor(TX_BLACK);
-	txEllipse(z + 70 + p * t,  420, z + 100 + p * t, 435);
+    txSetColor(TX_YELLOW);
+    txSetFillColor(TX_YELLOW);
+    txCircle(x + 95, y + 120, 20);
 }
 
-void oblaka(int x, int y)
+int ottyag(int x, int y)
 {
-	txSetFillColor(TX_WHITE);
-	txEllipse(x + 100, y + 50, x + 140, y + 70);
-	txEllipse(x + 160, y + 80, x + 200, y + 90);
-	txEllipse(x + 210, y + 68, x + 260, y + 78);
-	txEllipse(x + 280, y + 70, x + 330, y + 80);
-	txEllipse(x + 360, y + 50, x + 400, y + 59);
-	txEllipse(x + 420, y + 70, x + 460, y + 80);
-	txEllipse(x + 490, y + 68, x + 520, y + 78);
+    int d = 0;
 
+    while (!txGetAsyncKeyState(VK_SPACE))
+    {
+        txClear();
+        ground();
+        wall(20, 0);
+        //control_rubber(&d);
+        //printf("d=%d\n",d);
+        if (GetAsyncKeyState(VK_LEFT)) d--;
+        if (GetAsyncKeyState(VK_RIGHT)) d;
+
+
+
+        draw_higher_rubber(x, y, d);
+        rogatka_part2(x, y);
+        line_for_rogatka(x, y);
+        draw_shar(-d, 0);
+        rogatka_part1(x, y);
+        draw_lowler_rubber(x, y, d);
+
+        txSleep(50);
+
+    }
+
+    return d;
 }
 
-void rb2(int x, int y, int t)
+void vozvrat(int x, int y, int d)
 {
-	txSetColor(TX_BLACK, 7);
-	txArc(x + 45 - 75 - 0.5 * t, y + 105 - 120, x + 245 - 75 + 0.5 * t, y + 135 - 120, -180, 35);
+    int bufd = d;
+
+    while (bufd > -70)
+    {
+        txClear();
+        ground();
+        wall(20, 0);
+        //control_rubber(&d);
+        //printf("d=%d\n",d);
+
+        draw_higher_rubber(x, y, bufd);
+        rogatka_part2(x, y);
+        line_for_rogatka(x, y);
+        draw_shar(-bufd, 0);
+        rogatka_part1(x, y);
+        draw_lowler_rubber(x, y, bufd);
+
+        txSleep(50);
+
+        bufd = bufd - 5;
+
+    }
+
 }
 
-void rb22(int x, int y, int t)
+void polet(int d)
 {
-	txSetColor(TX_BLACK, 7);
-	txArc(x + 45 - 75 + 2.5 * t, y + 105 - 120, x + 245 - 75 - 2.5 * t, y + 135 - 120, -180, 35);
+    int t = 2;
+    int m = 0;
+    int p = 0;
+
+    while (m < 250)
+    {
+        txClear();
+        ground();
+        wall(20, 0);
+
+        draw_higher_rubber(20, 0, -d);
+        rogatka_part2(0, 0);
+        line_for_rogatka(0, 0);
+
+        m = (0.0004*t*t*t)/0.2; //y
+        p = 70 + ((t*t)/4); //x
+
+        draw_shar(p, m);
+
+        rogatka_part1(0, 0);
+        draw_lowler_rubber(20, 0, -d);
+
+        txSleep(50);
+        t += 2;
+
+    }
 }
-
-void rb23(int x, int y, int t)
-{
-	 
-	txSetColor(TX_BLACK, 7);
-	txArc(x + 110 - 75 + 1 * t*0, y + 105 - 120, x + 180 - 75 - 1 * t *0, y + 135 - 120, -180, 35);
-}
-
-
-void test_rubber_band()
-{
-	txSetColor(TX_BLACK, 7);
-	txArc(85, 105, 245, 135, 45, 135);
-}
-
-void mish()
-{
-	RECT area = { 0, 0, 1100,500};
-
-	while (txMouseButtons() == 1 )
-	{
-		txCircle(txMouseX(), txMouseY(), 20);
-		txSleep(0);
-	}
-}
-void ottyag()
-{
-		int x = 75;
-		int y = 120;
-		int t = 0;
-		int a;
-
-		while (t < 18)
-		{
-
-
-			ground();
-
-
-			wall(x, y);
-
-
-			rubber_band(x, y, t);
-
-
-			rogatka_2(x, y);
-			
-			
-			shar(x, y, t);
-
-
-			rogatka_1(x, y);
-			
-
-			line_for_rogatka(x, y);
-
-
-			//oblaka(x, y);
-
-
-			rb2(x, y, t);
-
-			t++;
-
-
-			txSleep(100);
-
-		}
-
-}
-
-
-void vozvrat_rezinki()
-{
-
-	int t = 0;
-	int x = 75;
-	int y = 120;
-	int a;
-
-	while (t < 30)
-	{
-
-
-		ground();
-
-
-		wall(x, y);
-
-
-		rubber_band2(x, y, t);
-
-
-		rogatka_2(x, y);
-
-
-		shar2(x, y, t);
-
-
-		rogatka_1(x, y);
-
-
-		line_for_rogatka(x, y);
-
-
-		//oblaka(x, y);
-
-		
-		rb22(x, y, t);
-
-		t++;
-
-
-		txSleep(50);
-
-	}
-}
-
-void polet_shara()
-{
-	int t = 29;
-	int x = 75;
-	int y = 120;
-	int z = 0;
-	int l = 0;
-	int m = 0;
-	int p = 0;
-
-
-
-
-		while ( m < 36 and p < 110)
-	{
-			printf("%d %d %d %d %d \n", p, m, z, l, t);
-
-			ground();
-
-
-			wall(x, y);
-
-
-			rubber_band3(x, y, t);
-
-
-			rogatka_2(x, y);
-
-			if (m < 35)
-			{
-				shar3(z, l, t, m, p);
-			}
-			else
-			{
-				lunka(z, p, t);
-			}
-
-			rogatka_1(x, y);
-
-
-			line_for_rogatka(x, y);
-
-
-			//oblaka(x, y);
-
-
-			rb23(x, y, t);
-			t++;
-			m = (0.004 * (t * t) / 4) / 0.2;
-			p = 0.3 * (t / 4);
-
-			txSleep(10); //v budushem za aprashivaemoe brat' 0.004. Zaprashiat tseloe chislo i umnozhat na 
-							//1/1000
-	
-	}
-}
+//m = (((0.005 * t * t) / 4) / 0.2) * t; //y
+//p = 70 + ((2 * (t / 4)) * t); //x
